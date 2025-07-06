@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pdfplumber
+groq
+langchain
+sentence-transformers
+scikit-learn
+pyngrok

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Manual Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    h2 {
+      background: #0077cc;
+      color: white;
+      padding: 15px;
+      margin: 0;
+      text-align: center;
+      border-radius: 0 0 20px 20px; /* rounded bottom edges */
+    }
+
+    #productSelect {
+      width: calc(100% - 40px);
+      margin: 10px 20px;
+      padding: 10px;
+      border: 2px solid #0077cc;
+      border-radius: 12px; /* more round */
+    }
+
+    #chat {
+      flex: 1;
+      background: #ffffff;
+      border: 2px solid #ccc;
+      margin: 0 20px 10px;
+      padding: 10px;
+      overflow-y: auto;
+      border-radius: 20px; /* big rounded corners */
+    }
+
+    .message {
+      margin: 8px 0;
+      padding: 10px 15px;
+      border-radius: 20px; /* rounded bubbles */
+      max-width: 90%;
+    }
+
+    .user {
+      background: #e3f2fd;
+      color: #0d47a1;
+      font-weight: bold;
+      display: block;
+    }
+
+    .bot {
+      background: #e8f5e9;
+      color: #1b5e20;
+      font-weight: bold;
+      display: block;
+    }
+
+    #inputContainer {
+      display: flex;
+      flex-direction: column;
+      margin: 0 20px 20px;
+    }
+
+    #userInput {
+      width: calc(100% - 20px);
+      border: 2px solid #2e7d32;
+      border-radius: 25px; /* MORE rounded than others */
+      padding: 10px;
+      resize: vertical;
+      min-height: 50px;
+    }
+
+    #sendBtn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 20px; /* more rounded */
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #sendBtn:hover {
+      background: #1b5e20;
+    }
+
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 20px;
+      }
+
+      #chat {
+        font-size: 14px;
+      }
+
+      #sendBtn {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Product Manual Chatbot</h2>
+
+  <select id="productSelect">
+    <option>Select Product</option>
+    <option value="ElectroLux washing Machine">ElectroLux washing Machine</option>
+  </select>
+
+  <div id="chat"></div>
+
+  <div id="inputContainer">
+    <textarea id="userInput" rows="2" placeholder="Ask your question..."></textarea>
+    <button id="sendBtn">Send</button>
+  </div>
+
+  <script>
+  const chat = document.getElementById('chat');
+  const userInput = document.getElementById('userInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const productSelect = document.getElementById('productSelect');
+
+  // ✅ Greeting
+  window.onload = () => {
+    addMessage('bot', '👋 Welcome : select your product to solve the problem?');
+  };
+
+  async function sendMessage() {
+    const message = userInput.value.trim();
+    const product = productSelect.value;
+
+    if (!message) return;
+    if (product === 'Select Product') {
+      alert('Please select a valid product.');
+      return;
+    }
+
+    addMessage('user', message);
+    userInput.value = '';
+
+    // ✅ Add 'Thinking...' placeholder
+    const thinkingDiv = addMessage('bot', '🤔 Thinking...');
+
+    const response = await fetch('https://499e-202-83-171-36.ngrok-free.app/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: message, product: product })
+    });
+
+    const data = await response.json();
+
+    // ✅ Replace 'Thinking...' with actual answer
+    thinkingDiv.innerHTML = `<span class="bot">Bot:</span> ${data.answer}`;
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  sendBtn.onclick = sendMessage;
+
+  userInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  function addMessage(sender, text) {
+    const div = document.createElement('div');
+    div.className = 'message';
+    div.innerHTML = `<span class="${sender}">${sender === 'user' ? 'You' : 'Bot'}:</span> ${text}`;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div; // return for replacement
+  }
+</script>
+
+
+</body>
+</html>
