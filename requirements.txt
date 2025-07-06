@@ -5,3 +5,4 @@ groq
 langchain
 sentence-transformers
 scikit-learn
+torchrec-cpu @ https://<your-link>/torchrec_cpu-0.1.1-py39-none-any.whl
