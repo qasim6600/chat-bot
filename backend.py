@@ -147,7 +147,8 @@ You MUST answer using ONLY the provided CONTEXT.
 
 # ----- Manuals -----
 manuals = {
-    "ElectroLux washing Machine": "E:/python/elctrolux.pdf"
+   # "ElectroLux washing Machine": "E:/python/elctrolux.pdf"
+    "ElectroLux washing Machine": "elctrolux.pdf"
 }
 
 manual_data = {}
