@@ -1,4 +1,4 @@
-python:3.12-slim
+python==3.12-slim
 fastapi
 uvicorn[standard]
 pdfplumber
