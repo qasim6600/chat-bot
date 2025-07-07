@@ -1,8 +1,8 @@
 fastapi
-uvicorn
+uvicorn[standard]
 pdfplumber
 groq
-langchain
+langchain-core
 sentence-transformers
 scikit-learn
 torch --index-url https://download.pytorch.org/whl/cpu
