@@ -240,7 +240,7 @@ async def instagram_webhook(request: Request):
 
 # ----- Start -----
 if __name__ == "__main__":
-    public_url = ngrok.connect(8000)
-    print(f"🚀 Public URL: {public_url}")
+   # public_url = ngrok.connect(8000)
+   # print(f"🚀 Public URL: {public_url}")
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
